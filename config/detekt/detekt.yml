@@ -783,3 +783,8 @@ style:
     active: true
     excludeImports:
       - 'java.util.*'
+
+PodlodkaCustomRules:
+  active: true
+  FunctionNameTooShort:
+    active: true

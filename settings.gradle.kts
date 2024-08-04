@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "detekt_podlodka_template"
 include(":app")
+include(":customdetektrules")

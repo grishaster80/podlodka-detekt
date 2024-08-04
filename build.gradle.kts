@@ -3,11 +3,16 @@ plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.jetbrains.kotlin.android) apply false
     alias(libs.plugins.detekt)
+    alias(libs.plugins.jetbrains.kotlin.jvm) apply false
 }
 
 //repositories {
 //    mavenCentral()
 //}
+
+dependencies {
+    detektPlugins(project(":customdetektrules"))
+}
 
 detekt {
     toolVersion = libs.versions.detekt.get()

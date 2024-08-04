@@ -9,4 +9,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
     }
+
+    fun x(){
+
+    }
 }
