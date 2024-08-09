@@ -1,9 +1,12 @@
+import io.gitlab.arturbosch.detekt.Detekt
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
+    alias(libs.plugins.detekt)
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.jetbrains.kotlin.android) apply false
-    alias(libs.plugins.detekt)
     alias(libs.plugins.jetbrains.kotlin.jvm) apply false
+    alias(libs.plugins.kotlin.compose) apply false
 }
 
 //repositories {
@@ -11,6 +14,7 @@ plugins {
 //}
 
 dependencies {
+    //detektPlugins(rootProject)
     detektPlugins(project(":customdetektrules"))
 }
 
@@ -21,3 +25,14 @@ detekt {
     source = files("$rootDir")
     autoCorrect = true
 }
+
+tasks.withType<Detekt>() {
+    jvmTarget = "1.8"
+    dependsOn(":customdetektrules:build")
+}
+
+//subprojects {
+//    apply{
+//        plugin("io.gitlab.arturbosch.detekt")
+//    }
+//}

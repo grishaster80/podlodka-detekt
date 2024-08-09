@@ -7,10 +7,10 @@ import androidx.activity.enableEdgeToEdge
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        val user = getUserById(42)?.toString()
     }
 
-    fun x(){
-
+    private fun getUserById(x: Int): String {
+        return ""
     }
 }
