@@ -1,3 +1,4 @@
+import com.android.utils.TraceUtils.simpleId
 import io.gitlab.arturbosch.detekt.Detekt
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
@@ -19,14 +20,32 @@ dependencies {
 }
 
 detekt {
+    debug = true
     toolVersion = libs.versions.detekt.get()
     config.setFrom(file("config/detekt/detekt.yml"))
     buildUponDefaultConfig = true
-    source = files("$rootDir")
     autoCorrect = true
 }
+subprojects {
+    apply(plugin = "io.gitlab.arturbosch.detekt")
 
-tasks.withType<Detekt>() {
+    detekt {
+        debug = true
+        toolVersion = "1.23.6"
+        config.setFrom(rootProject.files("config/detekt/detekt.yml"))
+        buildUponDefaultConfig = true
+        autoCorrect = true
+    }
+
+//    tasks.withType<Detekt> {
+//        jvmTarget = "1.8"
+//        //dependsOn(":customdetektrules:build")
+//    }
+}
+
+version = "1.9"
+
+tasks.withType<Detekt> {
     jvmTarget = "1.8"
     dependsOn(":customdetektrules:build")
 }

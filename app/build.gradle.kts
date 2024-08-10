@@ -1,8 +1,10 @@
+import io.gitlab.arturbosch.detekt.Detekt
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.detekt)
+    //alias(libs.plugins.detekt)
 }
 
 version = "1.0.1"
@@ -70,4 +72,13 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    detektPlugins(project(":customdetektrules"))
+}
+
+version = "1.2"
+
+tasks.withType<Detekt> {
+    jvmTarget = "1.8"
+    dependsOn(":customdetektrules:build")
 }

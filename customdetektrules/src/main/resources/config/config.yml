@@ -2,3 +2,5 @@ PodlodkaCustomRules:
   active: true
   FunctionNameTooShort:
     active: true
+  UseGetOrElseInsteadOfGetOrNull:
+    active: true
