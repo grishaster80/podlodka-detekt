@@ -9,17 +9,14 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val computationResultNullable = someOperationResult().getOrNull()
-
-        val computationResultNonNullable = someOperationResult().getOrElse {
-            OperationResult.FAILURE
-        }
-
-        println(computationResultNullable)
-
-        println(computationResultNonNullable)
+        println(42)
+        println(getNumber()?.toString())
 
         println(OperationResult.values().first())
+    }
+
+    fun getNumber(): Int {
+        return 42
     }
 
     private fun someOperationResult(): Result<OperationResult> {
