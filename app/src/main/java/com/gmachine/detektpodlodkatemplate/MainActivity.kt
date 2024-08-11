@@ -18,6 +18,8 @@ class MainActivity : ComponentActivity() {
         println(computationResultNullable)
 
         println(computationResultNonNullable)
+
+        println(OperationResult.values().first())
     }
 
     private fun someOperationResult(): Result<OperationResult> {

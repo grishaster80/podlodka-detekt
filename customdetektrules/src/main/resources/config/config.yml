@@ -3,4 +3,6 @@ PodlodkaCustomRules:
   FunctionNameTooShort:
     active: true
   UseGetOrElseInsteadOfGetOrNull:
+    active: false
+  UseEntriesInsteadOfValuesOnEnum:
     active: true

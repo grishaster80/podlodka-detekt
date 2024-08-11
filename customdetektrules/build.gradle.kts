@@ -1,9 +1,8 @@
 plugins {
     alias(libs.plugins.jetbrains.kotlin.jvm)
-    //alias(libs.plugins.detekt)
 }
 
-version = "2.8"
+version = "3.4"
 
 kotlin {
     jvmToolchain(17)
