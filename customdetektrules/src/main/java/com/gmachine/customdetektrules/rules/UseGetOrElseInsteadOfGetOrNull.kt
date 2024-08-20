@@ -9,78 +9,57 @@ import io.gitlab.arturbosch.detekt.api.Issue
 import io.gitlab.arturbosch.detekt.api.Rule
 import io.gitlab.arturbosch.detekt.api.Severity
 import io.gitlab.arturbosch.detekt.api.internal.RequiresTypeResolution
-import org.jetbrains.kotlin.descriptors.ClassDescriptor
-import org.jetbrains.kotlin.name.FqName
-import org.jetbrains.kotlin.psi.KtClass
+import io.gitlab.arturbosch.detekt.rules.fqNameOrNull
 import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
-import org.jetbrains.kotlin.psi.KtNamedFunction
-import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameSafe
-import org.jetbrains.kotlin.types.KotlinType
-import org.jetbrains.kotlin.types.typeUtil.supertypes
-
-//private val kotlinResultFqName = FqName("kotlin.Result")
+import org.jetbrains.kotlin.psi.KtExpression
+import org.jetbrains.kotlin.psi.psiUtil.getQualifiedExpressionForReceiver
+import org.jetbrains.kotlin.resolve.calls.util.getType
 
 @RequiresTypeResolution
-internal class UseGetOrElseInsteadOfGetOrNull(config: Config) : Rule(config) {
+internal class UseGetOrElseInsteadOfGetOrNull(config: Config = Config.empty) : Rule(config) {
     override val issue: Issue =
         Issue(javaClass.simpleName, Severity.Minor, ISSUE_DESCRIPTION, Debt.FIVE_MINS)
 
-    override fun visitClass(klass: KtClass) {
-        super.visitClass(klass)
-
-        report(
-            CodeSmell(
-                issue,
-                Entity.from(klass),
-                "UseGetOrElseInsteadOfGetOrNull visitClass isTypeResolutionEnabled ${isTypeResolutionEnabled()}"
-            )
-        )
-    }
-
-    override fun visitNamedFunction(function: KtNamedFunction) {
-        super.visitNamedFunction(function)
-
-        report(
-            CodeSmell(
-                issue,
-                Entity.from(function),
-                "UseGetOrElseInsteadOfGetOrNull visitFunction isTypeResolutionEnabled ${isTypeResolutionEnabled()}"
-            )
-        )
-    }
-
     override fun visitDotQualifiedExpression(expression: KtDotQualifiedExpression) {
         super.visitDotQualifiedExpression(expression)
-
-        report(
-            CodeSmell(
-                issue,
-                Entity.from(expression),
-                "UseGetOrElseInsteadOfGetOrNull visitDot isTypeResolutionEnabled ${isTypeResolutionEnabled()}"
-            )
-        )
 
         if (!isTypeResolutionEnabled()) {
             return
         }
 
-        //val selectorExpression = expression.selectorExpression ?: return
-        //val receiverExpression = expression.receiverExpression
+        if (expression
+                .selectorExpression
+                .isGetOrNullCalled() &&
+            expression
+                .receiverExpression
+                .isExpressionCalledForKotlinResult()
+        ) {
+            report(
+                CodeSmell(
+                    issue,
+                    Entity.from(expression),
+                    REPORT_MESSAGE
+                )
+            )
+        }
+
+        expression.getQualifiedExpressionForReceiver()
     }
 
-//    private fun isDotExpressionCalledForKotlinResultType(type: KotlinType): Boolean {
-//        return type.supertypes().any { superType ->
-//            superType.getClassFqName() == kotlinResultFqName
-//        }
-//    }
+    private fun KtExpression?.isGetOrNullCalled(): Boolean =
+        this?.text == "getOrNull()"
 
-//    private fun KotlinType.getClassFqName(): FqName? {
-//        return (constructor.declarationDescriptor as? ClassDescriptor)?.fqNameSafe
-//    }
+    private fun KtExpression?.isExpressionCalledForKotlinResult(): Boolean =
+        this?.getType(bindingContext)?.fqNameOrNull().toString() == KOTLIN_RESULT_FQ_NAME
 
 
     companion object {
+        private const val KOTLIN_RESULT_FQ_NAME = "kotlin.Result"
+
         private const val ISSUE_DESCRIPTION =
             "Due to this rule - You have to use getOrElse instead of getOrNull while working with kotlin.Result"
+
+        private const val REPORT_MESSAGE =
+            "getOrNull() called for kotlin.Result. Sealed class/object recommended instead of null"
     }
 }

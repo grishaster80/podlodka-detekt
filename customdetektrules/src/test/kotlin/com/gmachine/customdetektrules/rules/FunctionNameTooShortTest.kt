@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 
 @KotlinCoreEnvironmentTest
 class FunctionNameTooShortTest {
-    private val subject = FunctionNameTooShort(Config.empty)
+    private val rule = FunctionNameTooShort(Config.empty)
 
     private val kotlinCodeWithShortFunction = """     
             fun f() {
@@ -35,7 +35,7 @@ class FunctionNameTooShortTest {
         )
 
         assertTrue(
-            subject.lint(ktFile)
+            rule.lint(ktFile)
                 .isEmpty()
         )
     }
@@ -47,7 +47,7 @@ class FunctionNameTooShortTest {
         )
 
         assertTrue(
-            subject.lint(ktFile)
+            rule.lint(ktFile)
                 .isNotEmpty()
         )
     }

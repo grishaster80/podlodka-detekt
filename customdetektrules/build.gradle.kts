@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.jvm)
 }
 
-version = "3.4"
+version = "3.6"
 
 kotlin {
     jvmToolchain(17)

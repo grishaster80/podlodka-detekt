@@ -13,6 +13,10 @@ class MainActivity : ComponentActivity() {
         println(getNumber()?.toString())
 
         println(OperationResult.values().first())
+
+        val x = runCatching {  }.getOrNull()
+
+        runCatching {  }.getOrNull()
     }
 
     fun getNumber(): Int {
