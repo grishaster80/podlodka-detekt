@@ -16,7 +16,9 @@ class MainActivity : ComponentActivity() {
 
         val x = runCatching {  }.getOrNull()
 
-        runCatching {  }.getOrNull()
+        runCatching {  }.getOrElse {
+            3
+        }
     }
 
     fun getNumber(): Int {
