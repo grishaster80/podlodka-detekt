@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    //alias(libs.plugins.detekt)
+    alias(libs.plugins.detekt)
 }
 
 version = "1.0.1"
@@ -55,8 +55,19 @@ android {
     }
 }
 
-dependencies {
+detekt {
+    toolVersion = "1.23.6"
+    config.setFrom(file("../config/detekt/detekt.yml"))
+    buildUponDefaultConfig = true
+    autoCorrect = true
+}
 
+tasks.withType<Detekt> {
+    jvmTarget = "1.8"
+    dependsOn(":customdetektrules:build")
+}
+
+dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

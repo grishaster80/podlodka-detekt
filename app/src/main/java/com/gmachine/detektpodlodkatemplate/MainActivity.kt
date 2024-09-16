@@ -10,8 +10,6 @@ class MainActivity : ComponentActivity() {
         println(42)
         println(getNumber()?.toString())
 
-        println(OperationResult.values().first())
-
 
         val expressionResultNullable = runCatching { getExpressionResult() }
             .getOrNull()
@@ -24,6 +22,8 @@ class MainActivity : ComponentActivity() {
         println(expressionResultNullable)
 
         println(expressionResult)
+
+        println(x())
     }
 
     sealed interface ExpressionResult {
@@ -40,13 +40,7 @@ class MainActivity : ComponentActivity() {
         return 42
     }
 
-    private fun someOperationResult(): Result<OperationResult> {
-        return Result.failure(RuntimeException())
+    private fun x() {
+        println("I'm x")
     }
-
-    private enum class OperationResult {
-        SUCCESS, FAILURE
-    }
-
-    private fun x() {}
 }
