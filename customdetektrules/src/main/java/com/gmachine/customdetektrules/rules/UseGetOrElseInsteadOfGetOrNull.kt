@@ -42,8 +42,6 @@ internal class UseGetOrElseInsteadOfGetOrNull(config: Config = Config.empty) : R
                 )
             )
         }
-
-        expression.getQualifiedExpressionForReceiver()
     }
 
     private fun KtExpression?.isGetOrNullCalled(): Boolean =

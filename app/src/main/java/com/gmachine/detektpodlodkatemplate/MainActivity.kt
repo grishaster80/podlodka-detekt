@@ -2,8 +2,6 @@ package com.gmachine.detektpodlodkatemplate
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.enableEdgeToEdge
-import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,11 +12,28 @@ class MainActivity : ComponentActivity() {
 
         println(OperationResult.values().first())
 
-        val x = runCatching {  }.getOrNull()
 
-        runCatching {  }.getOrElse {
-            3
-        }
+        val expressionResultNullable = runCatching { getExpressionResult() }
+            .getOrNull()
+
+        val expressionResult = runCatching { getExpressionResult() }
+            .getOrElse {
+                ExpressionResult.Failure
+            }
+
+        println(expressionResultNullable)
+
+        println(expressionResult)
+    }
+
+    sealed interface ExpressionResult {
+        data class Value(val counter: Int) : ExpressionResult
+
+        data object Failure : ExpressionResult
+    }
+
+    fun getExpressionResult(): ExpressionResult {
+        return ExpressionResult.Value(3)
     }
 
     fun getNumber(): Int {
